@@ -3,8 +3,17 @@ import './Notes.css';
 
 export default function Notes(props) {
   return (
-    <div className="nav">
-      <h1>{props.title}</h1>
-    </div>
+    <div className="notes">
+        { 
+          props.NotesData.map((item) => {
+            return(
+              <div className="note">
+                <h3>{item.title}</h3>
+                <p>{item.note}</p>
+              </div>
+            );
+          })
+        }    
+      </div>
   );
 }

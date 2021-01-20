@@ -1,16 +1,10 @@
 import './App.css';
 import Nav from './components/Nav';
 import {React, useState} from 'react';
-let Data = [
-  {
-    title: "Some Title 1",
-    note: "Id exercitation occaecat in officia ipsum Lorem esse nisi. Laborum qui nulla proident occaecat sit sint est anim quis amet irure dolore. Et ea proident enim amet eu aliquip tempor adipisicing ipsum fugiat ipsum deserunt mollit et. Non exercitation non voluptate anim nisi cupidatat voluptate adipisicing labore."
-  },
-  {
-    title: "Some Title 2",
-    note: "Id exercitation occaecat in officia ipsum Lorem esse nisi. Laborum qui nulla proident occaecat sit sint est anim quis amet irure dolore. Et ea proident enim amet eu aliquip tempor adipisicing ipsum fugiat ipsum deserunt mollit et. Non exercitation non voluptate anim nisi cupidatat voluptate adipisicing labore."
-  }
-]
+import Notes from './components/Notes';
+let Data = require('./data');
+
+const fs = require('fs');
 
 function App() {
   let [ntitle, updateNtitle] = useState();
@@ -25,7 +19,12 @@ function App() {
     updateNtitle(e.target.value);
   }
   function Add(){
-    updateNotesData([...NotesData, { title: nnote, note: ntitle}]);
+    updateNotesData([...NotesData, { "title": nnote, "note": ntitle}]);
+    updateNtitle("");
+    updateNnote("");
+    fs.writeFile('./data.json', JSON.stringify(NotesData), err => {
+      if (err) throw err;
+    });
   }
   return (
     <div className="App">
@@ -40,21 +39,7 @@ function App() {
             <button onClick={Add}>Add Note+</button>
         </form>   
       </div>   
-      <div className="notes-container">
-        { 
-          NotesData.map((item) => {
-            return(
-              <div className="note">
-                <h3>{item.title}</h3>
-                <p>{item.note}</p>
-              </div>
-            );
-          })
-        }
-        
-
-    
-      </div>
+      <Notes NotesData={NotesData}/>
     </div>
   );
 }
